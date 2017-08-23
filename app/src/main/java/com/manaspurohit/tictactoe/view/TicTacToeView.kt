@@ -1,13 +1,11 @@
 package com.manaspurohit.tictactoe.view
 
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PointF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.manaspurohit.tictactoe.R
 import com.manaspurohit.tictactoe.TicTacToeActivity
 import com.manaspurohit.tictactoe.model.TicTacToeModel
 
@@ -15,7 +13,7 @@ import com.manaspurohit.tictactoe.model.TicTacToeModel
  * Custom view for tic tac toe
  */
 class TicTacToeView(context: Context, attrs: AttributeSet?) : View(context, attrs) {
-    private val paintBg: Paint = Paint()
+    private var bitmapBg: Bitmap = BitmapFactory.decodeResource(resources, R.drawable.niccage)
     private val paintLine: Paint = Paint()
     private val paintO: Paint = Paint()
     private val paintX: Paint = Paint()
@@ -24,8 +22,6 @@ class TicTacToeView(context: Context, attrs: AttributeSet?) : View(context, attr
 
     init {
         val strokeWidth = 5.0f
-        paintBg.color = Color.BLACK
-        paintBg.style = Paint.Style.FILL
 
         paintLine.color = Color.WHITE
         paintLine.style = Paint.Style.STROKE
@@ -40,6 +36,12 @@ class TicTacToeView(context: Context, attrs: AttributeSet?) : View(context, attr
         paintX.strokeWidth = strokeWidth
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
+        bitmapBg = Bitmap.createScaledBitmap(bitmapBg, w, h, false)
+    }
+
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
@@ -47,7 +49,7 @@ class TicTacToeView(context: Context, attrs: AttributeSet?) : View(context, attr
             return
         }
 
-        canvas.drawRect(0.0f, 0.0f, width.toFloat(), height.toFloat(), paintBg)
+        canvas.drawBitmap(bitmapBg, 0.0f, 0.0f, Paint())
         drawGameArea(canvas)
         drawPlayers(canvas)
 
@@ -127,18 +129,20 @@ class TicTacToeView(context: Context, attrs: AttributeSet?) : View(context, attr
                             TicTacToeModel.CIRCLE, TicTacToeModel.CROSS -> {
                                 val winner = if (TicTacToeModel.wonPlayer == TicTacToeModel.CIRCLE)
                                     "O" else "X"
-                                (context as TicTacToeActivity).showMessage("The winner is:" + " " + winner)
+                                (context as TicTacToeActivity).showMessage(
+                                        context.getString(R.string.display_winner) + " " + winner)
                             }
                             else -> {
                                 val next = if (TicTacToeModel.nextPlayer == TicTacToeModel.CIRCLE)
                                     "O" else "X"
-                                (context as TicTacToeActivity).showSnackbar("The next player is:" + " " + next)
+                                (context as TicTacToeActivity).showSnackbar(
+                                        context.getString(R.string.next_player) + " " + next)
                                 (context as TicTacToeActivity).showMessage("")
                             }
                         }
                     }
                     else -> {
-                        (context as TicTacToeActivity).showMessage("You cannot place here")
+                        (context as TicTacToeActivity).showMessage(context.getString(R.string.cannot_place))
                     }
                 }
 

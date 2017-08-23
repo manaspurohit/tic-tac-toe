@@ -33,6 +33,6 @@ class TicTacToeActivity : AppCompatActivity() {
 
     fun showSnackbar(message: String) {
         Snackbar.make(findViewById(R.id.layoutContent), message, Snackbar.LENGTH_LONG).setAction(
-                "Undo", { ticTacToeView.undo() } ).show()
+                getString(R.string.undo), { ticTacToeView.undo() } ).show()
     }
 }

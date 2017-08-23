@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">TicTacToe</string>
     <string name="clear">Clear</string>
+    <string name="undo">Undo</string>
+    <string name="cannot_place">You cannot place here</string>
+    <string name="next_player">The next player is:</string>
+    <string name="display_winner">The winner is:</string>
 </resources>
