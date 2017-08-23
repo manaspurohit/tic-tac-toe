@@ -8,6 +8,7 @@ import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
+import com.manaspurohit.tictactoe.TicTacToeActivity
 import com.manaspurohit.tictactoe.model.TicTacToeModel
 
 /**
@@ -87,15 +88,15 @@ class TicTacToeView(context: Context, attrs: AttributeSet?) : View(context, attr
                         canvas.drawCircle(centerX.toFloat(), centerY.toFloat(), radius.toFloat(), paintO)
                     }
                     TicTacToeModel.CROSS -> {
-                        canvas.drawLine(width / 3.0f,
-                                height / 3.0f,
-                                (width + 1) / 3.0f,
-                                (height + 1) / 3.0f,
+                        canvas.drawLine(i * width / 3.0f,
+                                j * height / 3.0f,
+                                width * (i + 1) / 3.0f,
+                                height * (j + 1) / 3.0f,
                                 paintX)
-                        canvas.drawLine((width + 1) / 3.0f,
-                                height / 3.0f,
-                                width / 3.0f,
-                                (height + 1) / 3.0f,
+                        canvas.drawLine(width * (i + 1) / 3.0f,
+                                j * height / 3.0f,
+                                i * width / 3.0f,
+                                height * (j + 1) / 3.0f,
                                 paintX)
                     }
                 }
@@ -124,17 +125,20 @@ class TicTacToeView(context: Context, attrs: AttributeSet?) : View(context, attr
 
                         when (TicTacToeModel.wonPlayer) {
                             TicTacToeModel.CIRCLE, TicTacToeModel.CROSS -> {
-                                val next = if (TicTacToeModel.nextPlayer == TicTacToeModel.CIRCLE)
-                                    "O" else "X"
-                            }
-                            else -> {
                                 val winner = if (TicTacToeModel.wonPlayer == TicTacToeModel.CIRCLE)
                                     "O" else "X"
+                                (context as TicTacToeActivity).showMessage("The winner is:" + " " + winner)
+                            }
+                            else -> {
+                                val next = if (TicTacToeModel.nextPlayer == TicTacToeModel.CIRCLE)
+                                    "O" else "X"
+                                (context as TicTacToeActivity).showSnackbar("The next player is:" + " " + next)
+                                (context as TicTacToeActivity).showMessage("")
                             }
                         }
                     }
                     else -> {
-                        // TODO: set message to you cannot place here
+                        (context as TicTacToeActivity).showMessage("You cannot place here")
                     }
                 }
 
@@ -155,7 +159,7 @@ class TicTacToeView(context: Context, attrs: AttributeSet?) : View(context, attr
 
     fun resetGame() {
         TicTacToeModel.resetGame()
-        // TODO: empty message box
+        (context as TicTacToeActivity).showMessage("")
         invalidate()
     }
 
