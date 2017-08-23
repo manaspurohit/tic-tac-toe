@@ -1,6 +1,7 @@
 package com.manaspurohit.tictactoe.model
 
 import android.graphics.Point
+import android.util.Log
 
 /**
  * Data model for tic tac toe
@@ -26,6 +27,7 @@ object TicTacToeModel {
     fun resetGame() {
         nextPlayer = CIRCLE
         wonPlayer = EMPTY
+        undoStep = null
 
         model = model.map { it.map { EMPTY }.toShortArray() }.toTypedArray()
     }
