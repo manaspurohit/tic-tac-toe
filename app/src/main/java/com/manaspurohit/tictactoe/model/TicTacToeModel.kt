@@ -15,13 +15,13 @@ object TicTacToeModel {
             shortArrayOf(EMPTY, EMPTY, EMPTY),
             shortArrayOf(EMPTY, EMPTY, EMPTY))
 
-    private var nextPlayer: Short = CIRCLE
+    var nextPlayer: Short = CIRCLE
         private set
 
     var wonPlayer: Short = EMPTY
         private set
 
-    private lateinit var undoStep: Point
+    private var undoStep: Point? = null
 
     fun resetGame() {
         nextPlayer = CIRCLE
@@ -42,6 +42,7 @@ object TicTacToeModel {
         for (i in 0..2) {
             if (model[i][1] != EMPTY && model[i][1] == model[i][0] && model[i][1] == model[i][2]) {
                 wonPlayer = model[i][1]
+                undoStep = null
                 return
             }
         }
@@ -49,6 +50,7 @@ object TicTacToeModel {
         for (i in 0..2) {
             if (model[1][i] != EMPTY && model[1][i] == model[0][i] && model[1][i] == model[2][i]) {
                 wonPlayer = model[1][i]
+                undoStep = null
                 return
             }
         }
@@ -57,6 +59,7 @@ object TicTacToeModel {
                 (model[1][1] == model[0][0] && model[1][1] == model[2][2] ||
                         model[1][1] == model[2][0] && model[1][1] == model[0][2])) {
             wonPlayer = model[1][1]
+            undoStep = null
             return
         }
     }
@@ -66,8 +69,10 @@ object TicTacToeModel {
     }
 
     fun undo() {
-        model[undoStep.x][undoStep.y] = EMPTY
-        switchPlayer()
+        undoStep?.let {
+            model[it.x][it.y] = EMPTY
+            switchPlayer()
+        }
     }
 
 }
